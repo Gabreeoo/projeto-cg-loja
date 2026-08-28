@@ -7,8 +7,9 @@ API simples construída para retornar o catálogo de produtos
 - Node.js
 - Express
 
-# Instalação das dependências Execute o comando abaixo na raiz do projeto:
+# Instalação das dependências
 
+Execute o comando abaixo na raiz do projeto:
 -npm install
 
 ## Como iniciar o servidor:
