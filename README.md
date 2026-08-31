@@ -1,21 +1,58 @@
 # API Loja de Doces
 
-API simples construída para retornar o catálogo de produtos
+API REST simples desenvolvida para gerenciar o catálogo de produtos da loja.
 
 # Pré-requisitos
 
-- Node.js
-- Express
+- **Node.js**: Versão 18 ou superior
+- **npm**: Gerenciador de pacotes integrado ao Node
 
-# Instalação das dependências
+# Instalação.
 
-Execute o comando abaixo na raiz do projeto:
--npm install
+Na raiz do projeto, instale as dependências executando:
+
+```bash
+npm install
+```
 
 ## Como iniciar o servidor:
 
+Inicie a aplicação com o comando:
+
+```bash
 node index.js
+```
 
-## Exemplo de uso da rota GET Com o servidor rodando, abra o navegador ou o Postman e acesse:
+O servidor estará disponível em: `http://localhost:3000//`
 
-`http://localhost:3000/api/doces`
+## Rotas da API
+
+1. Listar Produtos (GET)
+
+Retorna todos os doces cadastrados no catálogo.
+
+- Endpoint: `GET /api/doces`
+
+- Exemplo de URL: `http://localhost:3000/api/doces`
+
+2. Cadastrar Novo Produto (POST)
+
+Adiciona um novo doce ao catálogo em memória.
+
+- Endpoint: `POST /api/doces`
+
+- Headers: `Content-Type: application/json`
+
+- Corpo da Requisição (`Body`):
+
+```js
+{
+  "nome": "Beijinho de Coco",
+  "preco": 4.00,
+  "categoria: ["Coco", "Docinhos", "Entrada"]
+}
+```
+
+## Workflow do Projeto
+
+Optamos pela utilização do **GitHub Flow** como fluxo de trabalho neste projeto devido à sua simplicidade de uso e ao escopo reduzido da aplicação, permitindo entregas rápidas e sem burocracia.
