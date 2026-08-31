@@ -34,11 +34,19 @@ app.post("/api/doces", (req, res) => {
 
   if (!nome || !preco || !categoria) {
     return res.status(400).json({
-      mensagem: "Todos os campos precisam estar devidamente preenchidos",
+      mensagem: "Todos os campos precisam estar devidamente preenchidos.",
     });
   } else if (preco <= 0.05) {
     return res.status(400).json({
       mensagem: "O produto precisa ter um valor de no mínimo R$ 0.05.",
+    });
+  } else if (!Array.isArray(categoria)) {
+    return res.status(400).json({
+      mensagem: 'O campo "categoria" deve ser uma lista válida.',
+    });
+  } else if (categoria.length === 0) {
+    return res.status(400).json({
+      mensagem: "Envie ao menos uma categoria.",
     });
   }
 
