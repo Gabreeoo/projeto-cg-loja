@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 const port = 3000;
 
+app.use(express.json());
+
 const doces = [
   {
     id: 1,
@@ -25,6 +27,38 @@ const doces = [
 
 app.get("/api/doces", (req, res) => {
   res.json(doces);
+});
+
+app.post("/api/doces", (req, res) => {
+  const { nome, preco, categoria } = req.body;
+
+  if (!nome || !preco || !categoria) {
+    return res.status(400).json({
+      mensagem: "Todos os campos precisam estar devidamente preenchidos.",
+    });
+  } else if (preco <= 0.05) {
+    return res.status(400).json({
+      mensagem: "O produto precisa ter um valor de no mínimo R$ 0.05.",
+    });
+  } else if (!Array.isArray(categoria)) {
+    return res.status(400).json({
+      mensagem: 'O campo "categoria" deve ser uma lista válida.',
+    });
+  } else if (categoria.length === 0) {
+    return res.status(400).json({
+      mensagem: "Envie ao menos uma categoria.",
+    });
+  }
+
+  const novoDoce = {
+    id: doces.length + 1,
+    nome,
+    preco,
+    categoria,
+  };
+
+  doces.push(novoDoce);
+  return res.status(201).json(novoDoce);
 });
 
 app.listen(port, () => {
