@@ -49,7 +49,7 @@ Adiciona um novo doce ao catálogo em memória.
 {
   "nome": "Beijinho de Coco",
   "preco": 4.00,
-  "categoria: ["Coco", "Docinhos", "Entrada"]
+  "categoria": ["Coco", "Docinhos", "Entrada"]
 }
 ```
 
