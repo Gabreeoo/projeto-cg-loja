@@ -76,9 +76,14 @@ app.delete("/api/doces/:id", (req, res) => {
 
   doces.splice(indexDoce, 1);
 
-  return res.status(204);
+  return res.status(204).send();
 });
 
-app.listen(port, () => {
-  console.log(`Servidor rodando em http://localhost:${port}`);
-});
+/* istanbul ignore next */
+if (require.main === module) {
+  app.listen(port, () => {
+    console.log(`Servidor rodando em http://localhost:${port}`);
+  });
+}
+
+module.exports = app;
