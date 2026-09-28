@@ -50,8 +50,10 @@ app.post("/api/doces", (req, res) => {
     });
   }
 
+  const novoId = doces.length > 0 ? doces[doces.length - 1].id + 1 : 1;
+
   const novoDoce = {
-    id: doces.length + 1,
+    id: novoId,
     nome,
     preco,
     categoria,
