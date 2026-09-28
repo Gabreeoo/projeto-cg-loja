@@ -61,6 +61,22 @@ app.post("/api/doces", (req, res) => {
   return res.status(201).json(novoDoce);
 });
 
+app.delete("/api/doces/:id", (req, res) => {
+  const idDel = parseInt(req.params.id);
+
+  const indexDoce = doces.findIndex((doce) => doce.id === idDel);
+
+  if (indexDoce === -1) {
+    return res.status(404).json({
+      erro: "O Doce buscado não foi encontrado. Não foi possível remover.",
+    });
+  }
+
+  doces.splice(indexDoce, 1);
+
+  return res.status(204);
+});
+
 app.listen(port, () => {
   console.log(`Servidor rodando em http://localhost:${port}`);
 });
