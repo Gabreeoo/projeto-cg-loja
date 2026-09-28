@@ -50,8 +50,10 @@ app.post("/api/doces", (req, res) => {
     });
   }
 
+  const novoId = doces.length > 0 ? doces[doces.length - 1].id + 1 : 1;
+
   const novoDoce = {
-    id: doces.length + 1,
+    id: novoId,
     nome,
     preco,
     categoria,
@@ -61,6 +63,27 @@ app.post("/api/doces", (req, res) => {
   return res.status(201).json(novoDoce);
 });
 
-app.listen(port, () => {
-  console.log(`Servidor rodando em http://localhost:${port}`);
+app.delete("/api/doces/:id", (req, res) => {
+  const idDel = parseInt(req.params.id);
+
+  const indexDoce = doces.findIndex((doce) => doce.id === idDel);
+
+  if (indexDoce === -1) {
+    return res.status(404).json({
+      erro: "O Doce buscado não foi encontrado. Não foi possível remover.",
+    });
+  }
+
+  doces.splice(indexDoce, 1);
+
+  return res.status(204).send();
 });
+
+/* istanbul ignore next */
+if (require.main === module) {
+  app.listen(port, () => {
+    console.log(`Servidor rodando em http://localhost:${port}`);
+  });
+}
+
+module.exports = app;
