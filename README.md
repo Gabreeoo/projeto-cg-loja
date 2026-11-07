@@ -2,6 +2,15 @@
 
 API REST simples desenvolvida para gerenciar o catálogo de produtos da loja.
 
+## Imagem Docker
+
+A imagem da aplicação está hospedada no [DockerHub](https://hub.docker.com/r/pedropera/projeto-gc-loja).
+Para baixá-la, execute:
+
+```bash
+docker pull pedropera/projeto-gc-loja:latest
+```
+
 # Pré-requisitos
 
 - **Node.js**: Versão 18 ou superior
