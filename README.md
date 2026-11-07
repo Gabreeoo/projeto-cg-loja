@@ -56,3 +56,41 @@ Adiciona um novo doce ao catálogo em memória.
 ## Workflow do Projeto
 
 Optamos pela utilização do **GitHub Flow** como fluxo de trabalho neste projeto devido à sua simplicidade de uso e ao escopo reduzido da aplicação, permitindo entregas rápidas e sem burocracia.
+
+## Infraestrutura com Vagrant
+
+### Pré-requisitos
+
+- Vagrant instalado
+- Oracle VirtualBox instalado
+
+### Iniciar as máquinas virtuais
+
+Na raiz do projeto, valide o `Vagrantfile` e inicie as duas máquinas usando o VirtualBox:
+
+```bash
+vagrant validate
+vagrant up --provider=virtualbox
+```
+
+A VM1 usa o endereço privado `192.168.56.10`. A VM2 executa a API no endereço `192.168.56.11`, porta `3000`.
+
+### Testar a API a partir da VM1
+
+Entre na VM1:
+
+```bash
+vagrant ssh vm1
+```
+
+Dentro da VM1, consulte a rota GET:
+
+```bash
+curl http://192.168.56.11:3000/api/doces
+```
+
+Para sair da VM1, execute `exit`. Para desligar as máquinas sem removê-las, volte à raiz do projeto e execute:
+
+```bash
+vagrant halt
+```
