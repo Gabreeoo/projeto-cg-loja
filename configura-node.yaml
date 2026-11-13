@@ -1,0 +1,74 @@
+---
+- name: Configurar servidor da API Node.js e fazer o Deploy
+  hosts: api
+  become: true
+  vars:
+    app_dir: "/opt/projeto-cg-loja"
+    repo_url: "https://github.com/Gabreeoo/projeto-cg-loja.git"
+
+  tasks:
+    - name: Atualizar cache do apt
+      ansible.builtin.apt:
+        update_cache: yes
+
+    - name: Instalar dependencias do sistema (git, curl, ca-certificates)
+      ansible.builtin.apt:
+        name:
+          - git
+          - curl
+          - ca-certificates
+        state: present
+
+    - name: Baixar script de instalacao do Node.js 22.x
+      ansible.builtin.get_url:
+        url: https://deb.nodesource.com/setup_22.x
+        dest: /tmp/setup_node.sh
+        mode: "0755"
+
+    - name: Executar script de instalacao do Node.js
+      ansible.builtin.command: /tmp/setup_node.sh
+      args:
+        creates: /etc/apt/sources.list.d/nodesource.list
+
+    - name: Instalar Node.js
+      ansible.builtin.apt:
+        name: nodejs
+        state: present
+
+    - name: Clonar o repositorio da aplicacao
+      ansible.builtin.git:
+        repo: "{{ repo_url }}"
+        dest: "{{ app_dir }}"
+        version: main
+        force: yes
+
+    - name: Instalar dependencias do Node (npm)
+      ansible.builtin.command: npm ci --omit=dev
+      args:
+        chdir: "{{ app_dir }}"
+
+    - name: Criar arquivo de servico systemd para a API
+      ansible.builtin.copy:
+        dest: /etc/systemd/system/loja-api.service
+        content: |
+          [Unit]
+          Description=API Loja de Doces
+          After=network.target
+
+          [Service]
+          Type=simple
+          WorkingDirectory={{ app_dir }}
+          ExecStart=/usr/bin/node {{ app_dir }}/index.js
+          Restart=on-failure
+          User=root
+
+          [Install]
+          WantedBy=multi-user.target
+        mode: "0644"
+
+    - name: Recarregar systemd e iniciar a aplicacao
+      ansible.builtin.systemd:
+        name: loja-api
+        daemon_reload: yes
+        state: restarted
+        enabled: yes
