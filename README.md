@@ -103,3 +103,37 @@ Para sair da VM1, execute `exit`. Para desligar as máquinas sem removê-las, vo
 ```bash
 vagrant halt
 ```
+
+## Configuração e Automação com Ansible
+
+Para automatizar a configuração do servidor da API (VM2), utilizamos o **Ansible**. A máquina VM1 atua como nó de controle, enquanto a VM2 atua como nó gerenciado. O Ansible clona este repositório na VM2, instala o Node.js e suas dependências e configura a aplicação como um serviço `systemd`.
+
+### Como executar o Playbook do Ansible
+
+Após iniciar as máquinas com `vagrant up`, siga os passos:
+
+Acesse a máquina de controle (VM1):
+
+```bash
+vagrant ssh vm1
+```
+
+Navegue até o diretório mapeado que contém os arquivos de configuração:
+
+```bash
+cd /vagrant
+```
+
+Execute o playbook do Asinble. O comando irá ler o arquivo e conectar na VM2 via SSH
+
+```bash
+ansible-playbook configura-node.yaml
+```
+
+### Testando infraestrutura
+
+Você pode testar se a infraestrutura foi criada com sucesso na VM1, fazendo uma requisição com curl:
+
+```bash
+  curl -X GET http://192.168.56.11:3000/api/doces
+```
